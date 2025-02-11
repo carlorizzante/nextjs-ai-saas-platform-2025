@@ -1,11 +1,15 @@
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function LandingPage() {
   return (
-    <>
-      <h1>Next.js AI SaaS</h1>
-      <Button>Click me</Button>
-      <Button variant="destructive">Help</Button>
-    </>
+    <div className="flex items-center justify-center h-screen gap-4">
+      <Link href="/auth/sign-in">
+        <Button>Login</Button>
+      </Link>
+      <Link href="/auth/sign-up">
+        <Button>Register</Button>
+      </Link>
+    </div>
   );
 }
