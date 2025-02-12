@@ -1,1 +1,1 @@
-export type WithChildren = { children: React.ReactNode }
+export type WithChildren = { children?: React.ReactNode }

@@ -1,9 +1,16 @@
 "use client";
 
+import { useState } from 'react';
+import axios from 'axios';
 import { MessageSquare } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { BotAvatar } from '@/components/bot-avatar';
+import { Empty } from '@/components/empty';
 import { Heading } from '@/components/heading';
+import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -12,6 +19,8 @@ import {
   FormItem,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { UserAvatar } from '@/components/user-avatar';
+import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
@@ -22,6 +31,10 @@ const formSchema = z.object({
 });
 
 export default function ConversationPage() {
+  const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
+
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +46,26 @@ export default function ConversationPage() {
 
   // const handleSubmit = form.handleSubmit(async (data) => {});
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const userMessage: ChatCompletionMessageParam = {
+      role: 'user',
+      content: values.prompt,
+    }
+
+    try {
+      const response = await axios.post('/api/conversation', {
+        messages: [...messages, userMessage]
+      });
+      setMessages([...messages, userMessage, response.data.message]);
+      console.log(response);
+      form.reset();
+
+    } catch (error) {
+      // TODO: Open Pro Modal
+      console.error(error);
+
+    } finally {
+      router.refresh();
+    }
   }
 
   return (
@@ -80,7 +112,27 @@ export default function ConversationPage() {
           </Form>
         </div>
         <div className="mt-4 space-y-4">
-          Message content
+          {isLoading && <div className="flex justify-center items-center w-full p-8 rounded-lg bg-muted">
+            <Loader />
+          </div>}
+          {!messages.length && !isLoading && (
+            <Empty>Start your conversation!</Empty>
+          )}
+          <div className="flex flex-col-reverse gap-4">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={cn(
+                  'flex items-start gap-8 w-full p-8 rounded-lg',
+                  message.role === 'user' ? 'bg-white border boder-black/10' : 'bg-muted'
+                )}
+              >
+                {message.role === 'user' && <UserAvatar />}
+                {message.role !== 'user' && <BotAvatar />}
+                <p className="text-sm">{message.content?.toString()}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
