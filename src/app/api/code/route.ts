@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { auth } from '@clerk/nextjs/server';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
-// const instructonMessage: ChatCompletionMessageParam = {
-//   role: "system",
-//   content: "You are an helpful assistant.",
-// }
+const instructionMessage: ChatCompletionMessageParam = {
+  role: "system",
+  content: "You are a code generator. You answer exclusively in markdown code snippets. You can use code comments for explanation.",
+}
 
 export async function POST(
   req: Request
@@ -32,7 +33,7 @@ export async function POST(
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages,
+      messages: [instructionMessage, ...messages],
       // store: true,
     });
 
