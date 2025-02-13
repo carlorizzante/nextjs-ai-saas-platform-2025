@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import { Music } from 'lucide-react';
+import { VideoIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -25,8 +25,8 @@ const formSchema = z.object({
   }),
 });
 
-export default function MusicPage() {
-  const [music, setMusic] = useState<string>('aaaas');
+export default function VideoPage() {
+  const [video, setVideo] = useState<string>('');
 
   const router = useRouter();
 
@@ -40,9 +40,9 @@ export default function MusicPage() {
   // const handleSubmit = form.handleSubmit(async (data) => {});
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post('/api/music', values);
-      console.log(response.data.audio);
-      setMusic(response.data.audio);
+      const response = await axios.post('/api/video', values);
+      console.log(response.data[0]);
+      setVideo(response.data[0]);
       form.reset();
 
     } catch (error) {
@@ -59,11 +59,11 @@ export default function MusicPage() {
   return (
     <div>
       <Heading
-        title="Music Generation"
-        description="Turn your prompts into music!"
-        icon={Music}
-        iconColor="text-emerald-700"
-        bgColor="bg-emerald-700/10"
+        title="Video Generation"
+        description="Turn your prompts into video!"
+        icon={VideoIcon}
+        iconColor="text-orange-700"
+        bgColor="bg-orange-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -85,7 +85,7 @@ export default function MusicPage() {
                         {...field}
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Piano, guitar, drums, etc."
+                        placeholder="An hippo dancing hip pop."
                       />
                     </FormControl>
                   </FormItem>
@@ -103,11 +103,13 @@ export default function MusicPage() {
           {isLoading && <div className="flex justify-center items-center w-full p-8 rounded-lg bg-muted">
             <Loader />
           </div>}
-          {!music && !isLoading && (
-            <Empty>Music will be generated here!</Empty>
+          {!video && !isLoading && (
+            <Empty>Your video will be generated here!</Empty>
           )}
-          {music && (
-            <audio controls className="w-full mt-9" src={music} />
+          {video && (
+            <video className="w-full aspect-video mt-8 rounded-lg border bg-black" controls>
+              <source src={video} />
+            </video>
           )}
         </div>
       </div>
