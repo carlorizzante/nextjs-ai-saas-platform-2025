@@ -43,7 +43,7 @@ export async function POST(
     return NextResponse.json({ urls: response.data });
 
   } catch (error) {
-    console.error(error);
+    console.error('IMAGE GENERATION ERROR', error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

@@ -39,7 +39,7 @@ export async function POST(
     return NextResponse.json({ message: completion.choices[0].message });
 
   } catch (error) {
-    console.error(error);
+    console.error('CONVERSATION GENERATION ERROR', error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
