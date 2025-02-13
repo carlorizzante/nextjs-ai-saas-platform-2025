@@ -54,7 +54,6 @@ export default function ConversationPage() {
         messages: [...messages, userMessage]
       });
       setMessages([...messages, userMessage, response.data.message]);
-      console.log(response);
       form.reset();
 
     } catch (error) {
