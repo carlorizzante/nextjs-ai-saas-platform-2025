@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { checkUserApiUsageAction } from '@/actions/check-user-api-usage.action';
+import {
+  increaseUserApiUsageAction,
+} from '@/actions/increase-user-api-usage.action';
 import { auth } from '@clerk/nextjs/server';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -33,6 +37,11 @@ export async function POST(
       return new NextResponse("Resolution is required", { status: 400 });
     }
 
+    const freeTrial = checkUserApiUsageAction();
+    if (!freeTrial) {
+      return new NextResponse("Free trial limit reached.", { status: 403 });
+    }
+
     const response = await openai.images.generate({
       model: "dall-e-2",
       prompt,
@@ -40,6 +49,7 @@ export async function POST(
       size: resolution,
     });
 
+    await increaseUserApiUsageAction();
     return NextResponse.json({ urls: response.data });
 
   } catch (error) {

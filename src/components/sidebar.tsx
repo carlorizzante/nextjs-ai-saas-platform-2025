@@ -14,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { FreeCounter } from './free-counter';
 
 const montserrat = Montserrat({
   weight: "600",
@@ -63,11 +64,13 @@ const routes = [
     icon: Settings,
     href: '/settings',
   },
+];
 
+type SidebarProps = {
+  apiUsage?: number;
+}
 
-]
-
-export const Sidebar = () => {
+export const Sidebar = ({ apiUsage = 0 }: SidebarProps) => {
   const pathname = usePathname();
 
   return (
@@ -109,6 +112,7 @@ export const Sidebar = () => {
           ))}
         </div>
       </div>
+      <FreeCounter apiUsage={apiUsage} />
     </div>
   )
 
