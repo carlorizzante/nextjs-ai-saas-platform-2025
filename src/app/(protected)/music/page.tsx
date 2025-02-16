@@ -17,6 +17,7 @@ import {
   FormItem,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useProModal } from '@/hooks/use-pro-modal';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
@@ -29,6 +30,7 @@ export default function MusicPage() {
   const [music, setMusic] = useState<string>('aaaas');
 
   const router = useRouter();
+  const proModal = useProModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,7 +39,6 @@ export default function MusicPage() {
     },
   });
 
-  // const handleSubmit = form.handleSubmit(async (data) => {});
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post('/api/music', values);
@@ -45,9 +46,10 @@ export default function MusicPage() {
       setMusic(response.data.audio);
       form.reset();
 
-    } catch (error) {
-      // TODO: Open Pro Modal
-      console.error(error);
+    } catch (error: unknown) {
+      if ((error as { response: { status: number } })?.response?.status === 403) {
+        proModal.onOpen();
+      }
 
     } finally {
       router.refresh();

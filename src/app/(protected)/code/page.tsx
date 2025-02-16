@@ -21,11 +21,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UserAvatar } from '@/components/user-avatar';
+import { useProModal } from '@/hooks/use-pro-modal';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
-  // prompt: z.string().nonempty(),
   prompt: z.string().min(1, {
     message: 'Prompt is required',
   }),
@@ -35,6 +35,7 @@ export default function CodePage() {
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
 
   const router = useRouter();
+  const proModal = useProModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,9 +57,10 @@ export default function CodePage() {
       setMessages([...messages, userMessage, response.data.message]);
       form.reset();
 
-    } catch (error) {
-      // TODO: Open Pro Modal
-      console.error(error);
+    } catch (error: unknown) {
+      if ((error as { response: { status: number } })?.response?.status === 403) {
+        proModal.onOpen();
+      }
 
     } finally {
       router.refresh();

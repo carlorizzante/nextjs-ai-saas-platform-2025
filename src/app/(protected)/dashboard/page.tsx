@@ -1,54 +1,10 @@
 "use client";
 
-import {
-  ArrowRight,
-  Code,
-  ImageIcon,
-  MessageSquare,
-  Music,
-  VideoIcon,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
+import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-
-const tools = [
-  {
-    label: 'Conversation',
-    icon: MessageSquare,
-    color: 'text-violet-700',
-    bgColor: 'bg-violet-700/10',
-    href: '/conversation',
-  },
-  {
-    label: 'Image Generation',
-    icon: ImageIcon,
-    color: 'text-pink-700',
-    bgColor: 'bg-pink-700/10',
-    href: '/image',
-  },
-  {
-    label: 'VIdeo Generation',
-    icon: VideoIcon,
-    color: 'text-orange-700',
-    bgColor: 'bg-orange-700/10',
-    href: '/video',
-  },
-  {
-    label: 'Music Generation',
-    icon: Music,
-    color: 'text-emerald-700',
-    bgColor: 'bg-emerald-700/10',
-    href: '/music',
-  },
-  {
-    label: 'Code Generation',
-    icon: Code,
-    color: 'text-green-700',
-    bgColor: 'bg-green-700/10',
-    href: '/code',
-  },
-]
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -59,7 +15,7 @@ export default function DashboardPage() {
         <p className="text-muted-foreground font-light text-sm md:text-lg text-center">Chat withe the smartest AI and experience its mind bending reasoning capabilities.</p>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4">
-        {tools.map(({ label, color, bgColor, href, ...tool }) => (
+        {ROUTES.map(({ label, color, bgColor, href, ...tool }) => (
           <Card
             key={href}
             className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer"

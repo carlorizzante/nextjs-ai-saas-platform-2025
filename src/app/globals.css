@@ -12,6 +12,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+html body[data-scroll-locked] {
+  margin-right: 0 !important;
+}
+
+div[role=dialog] button {
+  color: white;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

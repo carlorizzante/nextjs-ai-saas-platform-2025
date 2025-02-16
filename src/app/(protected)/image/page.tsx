@@ -32,10 +32,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useProModal } from '@/hooks/use-pro-modal';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
-  // prompt: z.string().nonempty(),
   prompt: z.string().min(1, {
     message: 'Image prompt is required',
   }),
@@ -53,6 +53,7 @@ export default function ImagePage() {
   const [images, setImages] = useState<string[]>([]);
 
   const router = useRouter();
+  const proModal = useProModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,9 +74,10 @@ export default function ImagePage() {
       setImages(urls);
       form.reset();
 
-    } catch (error) {
-      // TODO: Open Pro Modal
-      console.error(error);
+    } catch (error: unknown) {
+      if ((error as { response: { status: number } })?.response?.status === 403) {
+        proModal.onOpen();
+      }
 
     } finally {
       router.refresh();

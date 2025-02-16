@@ -9,15 +9,19 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 
-export const MobileSidebar = () => (
+type MobileSidebarProps = {
+  apiUsage: number;
+}
+
+export const MobileSidebar = ({ apiUsage }: MobileSidebarProps) => (
   <Sheet>
     <SheetTrigger asChild>
       <Button variant="ghost" size="icon" className="md:hidden">
         <Menu size={24} />
       </Button>
     </SheetTrigger>
-    <SheetContent side="left" className="p-0">
-      <Sidebar />
+    <SheetContent side="left" className="max-w-72 p-0">
+      <Sidebar apiUsage={apiUsage} />
     </SheetContent>
   </Sheet>
 )

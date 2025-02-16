@@ -12,15 +12,15 @@ export default async function DashboardLayout({ children }: WithChildren) {
   return (
     <div className="relative h-full">
       <div className={cn(
-        'hidden md:fixed ',
+        'hidden md:fixed',
         'w-72 h-full',
         'md:flex md:flex-col',
-        'md:inset-y-0 z-[80px] bg-gray-900',
+        'md:inset-y-0 bg-gray-900',
       )}>
         <Sidebar apiUsage={apiUsage} />
       </div>
       <main className="md:pl-72">
-        <Navbar />
+        <Navbar apiUsage={apiUsage} />
         {children}
       </main>
     </div>

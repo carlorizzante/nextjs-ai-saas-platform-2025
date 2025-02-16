@@ -35,8 +35,8 @@ export async function POST(
       return new NextResponse("Messages are required", { status: 400 });
     }
 
-    const freeTrial = checkUserApiUsageAction();
-    if (!freeTrial) {
+    const isFreeTrial = await checkUserApiUsageAction();
+    if (!isFreeTrial) {
       return new NextResponse("Free trial limit reached.", { status: 403 });
     }
 
