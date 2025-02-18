@@ -6,6 +6,7 @@ import { MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
 import { BotAvatar } from '@/components/bot-avatar';
 import { Empty } from '@/components/empty';
@@ -61,6 +62,8 @@ export default function ConversationPage() {
     } catch (error: unknown) {
       if ((error as { response: { status: number } })?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error('Failed to generate conversation.');
       }
 
     } finally {

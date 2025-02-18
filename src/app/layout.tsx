@@ -5,6 +5,7 @@ import {
   Geist_Mono,
 } from 'next/font/google';
 import { ModalProvider } from '@/components/modals/modal-provider';
+import { ToastProvider } from '@/components/toast-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 
 const geistSans = Geist({
@@ -35,6 +36,7 @@ export default function RootLayout({
         >
           {children}
           <ModalProvider />
+          <ToastProvider />
         </body>
       </html>
     </ClerkProvider>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Music } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
 import { Empty } from '@/components/empty';
 import { Heading } from '@/components/heading';
@@ -49,6 +50,8 @@ export default function MusicPage() {
     } catch (error: unknown) {
       if ((error as { response: { status: number } })?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error('Failed to generate music.');
       }
 
     } finally {

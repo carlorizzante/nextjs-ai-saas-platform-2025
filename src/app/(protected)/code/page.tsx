@@ -6,6 +6,7 @@ import { Code } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
 import * as z from 'zod';
 import { BotAvatar } from '@/components/bot-avatar';
@@ -60,6 +61,8 @@ export default function CodePage() {
     } catch (error: unknown) {
       if ((error as { response: { status: number } })?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error('Failed to generate code.');
       }
 
     } finally {

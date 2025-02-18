@@ -9,6 +9,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
 import { Empty } from '@/components/empty';
 import { Heading } from '@/components/heading';
@@ -77,6 +78,8 @@ export default function ImagePage() {
     } catch (error: unknown) {
       if ((error as { response: { status: number } })?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error('Failed to generate image.');
       }
 
     } finally {
