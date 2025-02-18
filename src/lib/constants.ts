@@ -3,6 +3,7 @@ import {
   ImageIcon,
   MessageSquare,
   Music,
+  Settings,
   VideoIcon,
 } from 'lucide-react';
 
@@ -43,5 +44,12 @@ export const ROUTES = [
     color: 'text-green-700',
     bgColor: 'bg-green-700/10',
     href: '/code',
+  },
+  {
+    label: 'Settings',
+    icon: Settings,
+    color: 'text-zinc-700',
+    bgColor: 'bg-zinc-700/10',
+    href: '/settings',
   },
 ]
