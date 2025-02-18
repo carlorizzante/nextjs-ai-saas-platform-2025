@@ -11,9 +11,10 @@ import {
 
 type MobileSidebarProps = {
   apiUsage: number;
+  isPro?: boolean;
 }
 
-export const MobileSidebar = ({ apiUsage }: MobileSidebarProps) => (
+export const MobileSidebar = ({ apiUsage, isPro = false }: MobileSidebarProps) => (
   <Sheet>
     <SheetTrigger asChild>
       <Button variant="ghost" size="icon" className="md:hidden">
@@ -21,7 +22,7 @@ export const MobileSidebar = ({ apiUsage }: MobileSidebarProps) => (
       </Button>
     </SheetTrigger>
     <SheetContent side="left" className="max-w-72 p-0">
-      <Sidebar apiUsage={apiUsage} />
+      <Sidebar apiUsage={apiUsage} isPro={isPro} />
     </SheetContent>
   </Sheet>
 )

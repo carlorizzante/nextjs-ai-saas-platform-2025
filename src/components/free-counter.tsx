@@ -16,10 +16,11 @@ import { Progress } from './ui/progress';
 
 type FreeCounterProps = {
   apiUsage: number;
+  isPro: boolean;
 }
 
 
-export const FreeCounter = ({ apiUsage }: FreeCounterProps) => {
+export const FreeCounter = ({ apiUsage, isPro }: FreeCounterProps) => {
   const [mounted, setMounted] = useState(false);
 
   const proModal = useProModal();
@@ -29,6 +30,10 @@ export const FreeCounter = ({ apiUsage }: FreeCounterProps) => {
   }, []);
 
   if (!mounted) {
+    return null;
+  }
+
+  if (isPro) {
     return null;
   }
 

@@ -4,6 +4,7 @@ import { checkUserApiUsageAction } from '@/actions/check-user-api-usage.action';
 import {
   increaseUserApiUsageAction,
 } from '@/actions/increase-user-api-usage.action';
+import { checkSubscription } from '@/lib/subscription';
 import { auth } from '@clerk/nextjs/server';
 
 const REPLICATION_KEY = process.env.OPENAI_API_KEY!;
@@ -32,7 +33,9 @@ export async function POST(
     }
 
     const isFreeTrial = await checkUserApiUsageAction();
-    if (!isFreeTrial) {
+    const isPro = await checkSubscription();
+
+    if (!isFreeTrial && !isPro) {
       return new NextResponse("Free trial limit reached.", { status: 403 });
     }
 
@@ -56,7 +59,10 @@ export async function POST(
       }
     );
 
-    await increaseUserApiUsageAction();
+    if (!isPro) {
+      await increaseUserApiUsageAction();
+    }
+
     return NextResponse.json({ audio: output });
 
   } catch (error) {
