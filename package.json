@@ -9,7 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "validate": "yarn type-check && yarn lint",
-    "update": "yarn upgrade-interactive --latest && yarn validate"
+    "update": "yarn upgrade-interactive --latest && yarn validate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.11.1",
