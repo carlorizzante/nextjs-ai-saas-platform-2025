@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Zap } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 
 type SubscriptionButtonProps = {
   isValidSubscription: boolean;
